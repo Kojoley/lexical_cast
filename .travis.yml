@@ -113,7 +113,6 @@ before_install:
   # Adding missing toolsets and preparing Boost headers
   - ./bootstrap.sh
   - ./b2 headers
-  - ./b2 -j4 variant=debug tools/inspect/build
   - |-
     echo "using gcc ;" >> ~/user-config.jam
     echo "using clang ;" >> ~/user-config.jam
@@ -128,7 +127,6 @@ before_install:
 
 script:
   - sh -c "../../../b2 -j2 $B2_ARGS"
-  - ../../../dist/bin/inspect .. # inspect tool run
 
 after_success:
   # Copying Coveralls data to a separate folder
