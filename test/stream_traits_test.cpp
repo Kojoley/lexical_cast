@@ -12,6 +12,9 @@
 
 #include <boost/lexical_cast/detail/converter_lexical.hpp>
 
+#include <boost/array.hpp>
+#include <boost/range/iterator_range_core.hpp>
+
 #include <boost/test/unit_test.hpp>
 
 template <class T>

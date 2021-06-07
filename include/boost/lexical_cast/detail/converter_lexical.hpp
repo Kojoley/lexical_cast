@@ -47,11 +47,22 @@
 #include <array>
 #endif
 
-#include <boost/array.hpp>
-#include <boost/range/iterator_range_core.hpp>
-#include <boost/container/container_fwd.hpp>
-
 #include <boost/lexical_cast/detail/converter_lexical_streams.hpp>
+
+// forward declarations
+namespace boost {
+    template<class T, std::size_t N>
+    class array;
+
+    template<typename IteratorT>
+    class iterator_range;
+
+    namespace container
+    {
+        template<class CharT, class Traits, class Allocator>
+        class basic_string;
+    }
+}
 
 namespace boost {
 
@@ -122,6 +133,13 @@ namespace boost {
             boost::detail::is_character< Char >::value,
             Char,
             boost::detail::deduce_character_type_later< boost::iterator_range< const Char* > >
+        > {};
+
+        template < typename Char >
+        struct stream_char_common< boost::detail::simple_string_view< Char > >: public boost::conditional<
+            boost::detail::is_character< Char >::value,
+            Char,
+            boost::detail::deduce_character_type_later< boost::detail::simple_string_view< Char > >
         > {};
 
         template < class Char, class Traits, class Alloc >

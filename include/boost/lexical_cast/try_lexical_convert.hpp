@@ -43,8 +43,14 @@
 #include <boost/lexical_cast/detail/converter_numeric.hpp>
 #include <boost/lexical_cast/detail/converter_lexical.hpp>
 
-#include <boost/range/iterator_range_core.hpp>
-#include <boost/container/container_fwd.hpp>
+// forward declarations
+namespace boost {
+    namespace container
+    {
+        template<class CharT, class Traits, class Allocator>
+        class basic_string;
+    }
+}
 
 namespace boost {
     namespace detail
@@ -209,7 +215,7 @@ namespace boost {
                 "This overload of try_lexical_convert is meant to be used only with arrays of characters."
             );
             return ::boost::conversion::detail::try_lexical_convert(
-                ::boost::iterator_range<const CharacterT*>(chars, chars + count), result
+                ::boost::detail::simple_string_view<CharacterT>(chars, chars + count), result
             );
         }
 

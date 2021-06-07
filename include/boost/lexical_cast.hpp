@@ -27,7 +27,6 @@
 #define BOOST_LCAST_NO_WCHAR_T
 #endif
 
-#include <boost/range/iterator_range_core.hpp>
 #include <boost/lexical_cast/bad_lexical_cast.hpp>
 #include <boost/lexical_cast/try_lexical_convert.hpp>
 
@@ -49,7 +48,7 @@ namespace boost
     inline Target lexical_cast(const char* chars, std::size_t count)
     {
         return ::boost::lexical_cast<Target>(
-            ::boost::iterator_range<const char*>(chars, chars + count)
+            ::boost::detail::simple_string_view<char>(chars, chars + count)
         );
     }
 
@@ -57,7 +56,7 @@ namespace boost
     inline Target lexical_cast(const unsigned char* chars, std::size_t count)
     {
         return ::boost::lexical_cast<Target>(
-            ::boost::iterator_range<const unsigned char*>(chars, chars + count)
+            ::boost::detail::simple_string_view<unsigned char>(chars, chars + count)
         );
     }
 
@@ -65,7 +64,7 @@ namespace boost
     inline Target lexical_cast(const signed char* chars, std::size_t count)
     {
         return ::boost::lexical_cast<Target>(
-            ::boost::iterator_range<const signed char*>(chars, chars + count)
+            ::boost::detail::simple_string_view<signed char>(chars, chars + count)
         );
     }
 
@@ -74,7 +73,7 @@ namespace boost
     inline Target lexical_cast(const wchar_t* chars, std::size_t count)
     {
         return ::boost::lexical_cast<Target>(
-            ::boost::iterator_range<const wchar_t*>(chars, chars + count)
+            ::boost::detail::simple_string_view<wchar_t>(chars, chars + count)
         );
     }
 #endif
@@ -83,7 +82,7 @@ namespace boost
     inline Target lexical_cast(const char16_t* chars, std::size_t count)
     {
         return ::boost::lexical_cast<Target>(
-            ::boost::iterator_range<const char16_t*>(chars, chars + count)
+            ::boost::detail::simple_string_view<char16_t>(chars, chars + count)
         );
     }
 #endif
@@ -92,7 +91,7 @@ namespace boost
     inline Target lexical_cast(const char32_t* chars, std::size_t count)
     {
         return ::boost::lexical_cast<Target>(
-            ::boost::iterator_range<const char32_t*>(chars, chars + count)
+            ::boost::detail::simple_string_view<char32_t>(chars, chars + count)
         );
     }
 #endif

@@ -18,7 +18,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/core/lightweight_test.hpp>
-#include <boost/range/iterator_range.hpp>
 
 #include <cstdlib>
 

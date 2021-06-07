@@ -68,23 +68,46 @@
 #include <array>
 #endif
 
-#include <boost/array.hpp>
 #include <boost/type_traits/make_unsigned.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_float.hpp>
-#include <boost/range/iterator_range_core.hpp>
-#include <boost/container/container_fwd.hpp>
 #include <boost/integer.hpp>
 #include <boost/detail/basic_pointerbuf.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/core/enable_if.hpp>
+#include <algorithm>
 #ifndef BOOST_NO_CWCHAR
 #   include <cwchar>
 #endif
+
+// forward declarations
+namespace boost {
+    template<class T, std::size_t N>
+    class array;
+
+    template<typename IteratorT>
+    class iterator_range;
+
+    namespace container
+    {
+        template<class CharT, class Traits, class Allocator>
+        class basic_string;
+    }
+}
 
 namespace boost {
 
     namespace detail // basic_unlockedbuf
     {
+        template <class CharT>
+        struct simple_string_view {
+            simple_string_view(const CharT* begin_, const CharT* end_)
+              : begin(begin_), end(end_) {}
+
+            const CharT* begin;
+            const CharT* end;
+        };
+
         // acts as a stream buffer which wraps around a pair of pointers
         // and gives acces to internals
         template <class BufferType, class CharT>
@@ -374,6 +397,26 @@ namespace boost {
                 return true;
             }
 
+            bool operator<<(detail::simple_string_view<CharT> view) BOOST_NOEXCEPT {
+                start = view.begin;
+                finish = view.end;
+                return true;
+            }
+
+            bool operator<<(detail::simple_string_view<signed char> view) BOOST_NOEXCEPT {
+                return (*this) << detail::simple_string_view<char>(
+                    reinterpret_cast<const char*>(view.begin),
+                    reinterpret_cast<const char*>(view.end)
+                );
+            }
+
+            bool operator<<(detail::simple_string_view<unsigned char> view) BOOST_NOEXCEPT {
+                return (*this) << detail::simple_string_view<char>(
+                    reinterpret_cast<const char*>(view.begin),
+                    reinterpret_cast<const char*>(view.end)
+                );
+            }
+
             template <class C>
             BOOST_DEDUCED_TYPENAME boost::disable_if<boost::is_const<C>, bool>::type
             operator<<(const iterator_range<C*>& rng) BOOST_NOEXCEPT {
@@ -386,14 +429,13 @@ namespace boost {
                 return true;
             }
 
-            bool operator<<(const iterator_range<const signed char*>& rng) BOOST_NOEXCEPT {
-                return (*this) << iterator_range<const char*>(
-                    reinterpret_cast<const char*>(rng.begin()),
-                    reinterpret_cast<const char*>(rng.end())
-                );
-            }
-
-            bool operator<<(const iterator_range<const unsigned char*>& rng) BOOST_NOEXCEPT {
+            // must be templated because we may do not have iterator_range definition
+            template <class C>
+            BOOST_DEDUCED_TYPENAME boost::enable_if_c<
+                boost::is_same<C, signed char>::value ||
+                boost::is_same<C, unsigned char>::value, bool
+            >::type
+            operator<<(const iterator_range<const C*>& rng) BOOST_NOEXCEPT {
                 return (*this) << iterator_range<const char*>(
                     reinterpret_cast<const char*>(rng.begin()),
                     reinterpret_cast<const char*>(rng.end())
