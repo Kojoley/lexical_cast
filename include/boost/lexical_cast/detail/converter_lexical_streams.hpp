@@ -216,7 +216,8 @@ namespace boost {
 
             bool shl_char_array_limited(CharT const* str, std::size_t max_size) BOOST_NOEXCEPT {
                 start = str;
-                finish = std::find(start, start + max_size, Traits::to_char_type(0));
+                if (!(finish = Traits::find(start, max_size, Traits::to_char_type(0))))
+                    finish = start + max_size;
                 return true;
             }
 
