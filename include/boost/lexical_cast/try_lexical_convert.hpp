@@ -44,7 +44,15 @@
 #include <boost/lexical_cast/detail/converter_lexical.hpp>
 
 #include <boost/range/iterator_range_core.hpp>
-#include <boost/container/container_fwd.hpp>
+
+// forward declarations
+namespace boost {
+    namespace container
+    {
+        template<class CharT, class Traits, class Allocator>
+        class basic_string;
+    }
+}
 
 namespace boost {
     namespace detail

@@ -72,7 +72,6 @@
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_float.hpp>
 #include <boost/range/iterator_range_core.hpp>
-#include <boost/container/container_fwd.hpp>
 #include <boost/integer.hpp>
 #include <boost/detail/basic_pointerbuf.hpp>
 #include <boost/noncopyable.hpp>
@@ -84,6 +83,12 @@
 namespace boost {
     template<class T, std::size_t N>
     class array;
+
+    namespace container
+    {
+        template<class CharT, class Traits, class Allocator>
+        class basic_string;
+    }
 }
 
 namespace boost {
