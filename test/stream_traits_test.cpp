@@ -12,6 +12,8 @@
 
 #include <boost/lexical_cast/detail/converter_lexical.hpp>
 
+#include <boost/array.hpp>
+
 #include <boost/test/unit_test.hpp>
 
 template <class T>

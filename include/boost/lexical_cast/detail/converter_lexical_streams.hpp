@@ -68,7 +68,6 @@
 #include <array>
 #endif
 
-#include <boost/array.hpp>
 #include <boost/type_traits/make_unsigned.hpp>
 #include <boost/type_traits/is_integral.hpp>
 #include <boost/type_traits/is_float.hpp>
@@ -80,6 +79,12 @@
 #ifndef BOOST_NO_CWCHAR
 #   include <cwchar>
 #endif
+
+// forward declarations
+namespace boost {
+    template<class T, std::size_t N>
+    class array;
+}
 
 namespace boost {
 

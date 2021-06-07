@@ -47,11 +47,16 @@
 #include <array>
 #endif
 
-#include <boost/array.hpp>
 #include <boost/range/iterator_range_core.hpp>
 #include <boost/container/container_fwd.hpp>
 
 #include <boost/lexical_cast/detail/converter_lexical_streams.hpp>
+
+// forward declarations
+namespace boost {
+    template<class T, std::size_t N>
+    class array;
+}
 
 namespace boost {
 
